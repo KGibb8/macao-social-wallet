@@ -35,7 +35,7 @@ apt-get --yes --force-yes --no-install-recommends install openjdk-7-jdk mongodb
 print "== end installing openJDK and mongodb"
 
 [[ -x /usr/local/bin/lein ]] || {
-print "== installing leiningen"
+  print "== installing leiningen"
   curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein \
     -o  /usr/local/bin/lein
   chmod +x /usr/local/bin/lein
@@ -59,6 +59,10 @@ print "== installing leiningen"
 print "== start building freecoin"
 sudo -u freecoin lein deps
 sudo -u freecoin lein compile
+emailconf=/home/freecoin/freecoin-src/email-conf.edn
+if [ ! -f $emailconf ]; then
+  echo '{:email-server "" :email-user "" :email-pass "" :email-address ""}' > $emailconf
+fi
 print "== over building freecoin"
 
 # start freecoin (and also at every boot from rc.local)
